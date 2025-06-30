@@ -1,5 +1,5 @@
 const express = require("express");
-const { sendEmail } = require("./middleware/sendmail");
+const { sendEmail } = require("./sendmail");
 
 const app = express();
 const port = 5000;
