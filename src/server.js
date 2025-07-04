@@ -8,13 +8,11 @@ const { sendRest } = require("./restPassword");
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middleware
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
-    methods: ["POST"],
-  })
-);
+// ✅ Allow cross-origin requests
+app.use(cors({
+  origin: '*', // Or restrict to your frontend domain for security
+}));
+
 app.use(express.json());
 
 // Reusable email sending function
