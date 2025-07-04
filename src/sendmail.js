@@ -87,7 +87,6 @@ const generateHtmlFromText = (name, verificationCode) => {
           }
           .email-wrapper {
             background-color: #f4f4f4;
-            padding: 5px;
           }
           .email-container {
             max-width: 600px;
@@ -98,7 +97,6 @@ const generateHtmlFromText = (name, verificationCode) => {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
           }
           .header {
-            background-color: #007bff;
             padding: 30px 20px;
             text-align: center;
             border-radius: 10px 10px 0 0;
@@ -124,7 +122,7 @@ const generateHtmlFromText = (name, verificationCode) => {
             padding: 15px 30px;
             font-size: 24px;
             font-weight: bold;
-            color: #007bff;
+            color: #f97316;
             background-color: #e9ecef;
             border-radius: 8px;
             margin: 20px 0;
@@ -153,7 +151,7 @@ const generateHtmlFromText = (name, verificationCode) => {
             border-radius: 0 0 10px 10px;
           }
           .footer a {
-            color: #007bff;
+            color: #f97316;
             text-decoration: none;
           }
           .footer a:hover {
@@ -228,4 +226,3 @@ const sendEmail = async (to, subject, name, verificationCode, html) => {
 };
 
 module.exports = { sendEmail };require("dotenv").config();
-
