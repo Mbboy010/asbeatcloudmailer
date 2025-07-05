@@ -4,17 +4,18 @@ require("dotenv").config();
 
 const { sendEmail } = require("../middleware/sendmail");
 const { sendRest } = require("../middleware/restPassword");
-const { sendWelcomeEmail } = require("../middleware/wellcomeMassage");
+const { sendWelcomeEmail } = require("../middleware/welcomeMassage");
 const { sendWelcomeBackEmail } = require("../middleware/welcomeBack");
+const { sendPasswordChangedEmail } = require("../middleware/passwordChanged");
+const { sendReportSubmittedEmail } = require("../middleware/reportSubmitted");
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 // ✅ Allow cross-origin requests
 app.use(cors({
-  origin: '*', // Or restrict to your frontend domain for security
+  origin: '*',
 }));
-
 
 app.use(express.json());
 
@@ -82,6 +83,24 @@ app.post("/welcome-back", sendWelcomeBackEmail, (req, res) => {
   });
 });
 
+// Password changed email endpoint
+app.post("/password-changed", sendPasswordChangedEmail, (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Password changed email sent successfully",
+    result: req.emailResult,
+  });
+});
+
+// Report submitted email endpoint
+app.post("/submit-report", sendReportSubmittedEmail, (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Report submitted email sent successfully",
+    result: req.emailResult,
+  });
+});
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error("Unexpected error:", err.message, err.stack);
@@ -94,5 +113,5 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port} at ${new Date().toLocaleString("en-US", { timeZone: "Africa/Lagos" })}`);
 });
