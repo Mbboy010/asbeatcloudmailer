@@ -2,8 +2,10 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-const { sendEmail } = require("./sendmail");
-const { sendRest } = require("./restPassword");
+const { sendEmail } = require("../middleware/sendmail");
+const { sendRest } = require("../middleware/restPassword");
+const { sendWelcomeEmail } = require("../middleware/wellcomeMassage");
+const { sendWelcomeBackEmail } = require("../middleware/welcomeBack");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -13,13 +15,13 @@ app.use(cors({
   origin: '*', // Or restrict to your frontend domain for security
 }));
 
+
 app.use(express.json());
 
 // Reusable email sending function
 const sendEmailHandler = async (req, res, emailFunction) => {
   const { to, subject, name, verificationCode } = req.body;
 
-  // Validate input
   if (!to || !subject || !name || !verificationCode) {
     return res.status(400).json({
       status: "error",
@@ -27,7 +29,6 @@ const sendEmailHandler = async (req, res, emailFunction) => {
     });
   }
 
-  // Basic email format validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(to)) {
     return res.status(400).json({
@@ -62,6 +63,24 @@ app.post("/verification", (req, res) =>
 app.post("/resetPassword", (req, res) =>
   sendEmailHandler(req, res, sendRest)
 );
+
+// Welcome email endpoint
+app.post("/welcome", sendWelcomeEmail, (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Welcome email sent successfully",
+    result: req.emailResult,
+  });
+});
+
+// Welcome back email endpoint
+app.post("/welcome-back", sendWelcomeBackEmail, (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Welcome back email sent successfully",
+    result: req.emailResult,
+  });
+});
 
 // Global error handler
 app.use((err, req, res, next) => {
